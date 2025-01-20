@@ -1,30 +1,50 @@
-FROM php:7.4-fpm
+# Use official PHP Apache image
+FROM php:7.2-apache
 
-# Install dependencies
+# Install system dependencies and Composer
 RUN apt-get update && apt-get install -y \
     libpng-dev \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libfreetype6-dev \
-    zip \
-    unzip \
+    libzip-dev \
     git \
-    curl \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy application files
-COPY . .
+    unzip && \
+    docker-php-ext-configure zip && \
+    docker-php-ext-install gd pdo pdo_mysql zip
 
 # Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Enable mod_rewrite for Apache
+RUN a2enmod rewrite
 
-# Expose port 9000
-EXPOSE 9000
-CMD ["php-fpm"]
+# Copy the Laravel project to the Apache web directory
+COPY . /var/www/html
+
+# Set working directory to Laravel project
+WORKDIR /var/www/html
+
+RUN composer clear-cache
+RUN rm -rf vendor composer.lock
+
+# Run Composer install to install PHP dependencies
+RUN composer install --no-interaction --prefer-dist
+# Set file permissions
+RUN git config --global --add safe.directory /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+# Set proper permissions for storage and bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Configure Apache to use /public as the DocumentRoot
+RUN echo '<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html/public\n\
+    <Directory /var/www/html/public>\n\
+        Options Indexes FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+
+# Expose port 80
+EXPOSE 80

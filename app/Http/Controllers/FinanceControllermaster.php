@@ -12,7 +12,7 @@ use App\Jurnal_pengeluaran_kas;
 //class lama
 // class FinanceController extends Controller
 // {
-   
+
 //      public function index()
 //     {
 //         $KodePerkiraan = KodePerkiraan::all();
@@ -30,7 +30,7 @@ use App\Jurnal_pengeluaran_kas;
 //     {
 //        // return view('finance.jurnal.create');
 //        return view('finance.jurnal.create');
-       
+
 //     }
 
 //     public function input_pelunasan_piutang_supplier()
@@ -40,7 +40,7 @@ use App\Jurnal_pengeluaran_kas;
 
 //     public function store(Request $request)
 //     {
-       
+
 //          $kodeperkiraan = new KodePerkiraan([
 //              'NO_COA' => $request->post('no_header_coa') . $request->post('no_coa'),
 //              'DESKRIPSI_COA' => $request->post('deskripsi_coa'),
@@ -48,7 +48,7 @@ use App\Jurnal_pengeluaran_kas;
 //              'SUB' => $request->post('sub'),
 //              'JENIS' => $request->post('jenis')
 //          ]);
-     
+
 //          $kodeperkiraan->save();
 //         return redirect('finance')->with('success', 'customer saved!');
 //     }
@@ -69,16 +69,16 @@ use App\Jurnal_pengeluaran_kas;
 // 	]);
 // 		return redirect('home')->with('success', 'customer saved!');
 
-// 	}	
+// 	}
 
 
 //     public function storeData_Jurnal(Request $request)
 //     {
-		
+
 // 	$data_pengadaan = DB::table('pengadaan')->select('total_pembelian','pajak','total_pajak')->where('id_pengadaan','=',$request->akun_kredit)->first();
 // 	//dd($data_pengadaan->total_pembelian-10000);
 // 	//dd($data_pengadaan->pajak);
-	
+
 // 	DB::table('pelunasan_hutang_supplier')->insert([
 // 		'id_pengadaan' => $request->akun_kredit,
 // 		'tgl_pelunasan' => $request->tanggal_jurnal,
@@ -94,8 +94,8 @@ use App\Jurnal_pengeluaran_kas;
 // 	else{
 // 	    DB::select('CALL jurnal_debit(?,?,?,?)', [$request->post('akun_debit'),$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),$request->post('deskripsi_jurnal'),'UMUM']);
 //             DB::select('CALL jurnal_kredit(?,?,?,?)', [130002,$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),$request->post('deskripsi_jurnal'),'UMUM']);
-// 	}   
-// 	DB::table('pengadaan')->where('id_pengadaan',$request->akun_kredit)->update(['total_pelunasan_piutang'=>$data_pengadaan->total_pembelian - $request->nominal_jurnal]);  
+// 	}
+// 	DB::table('pengadaan')->where('id_pengadaan',$request->akun_kredit)->update(['total_pelunasan_piutang'=>$data_pengadaan->total_pembelian - $request->nominal_jurnal]);
 // 	return redirect('home')->with('success', 'customer saved!');
 //     }
 
@@ -107,7 +107,7 @@ use App\Jurnal_pengeluaran_kas;
 // 		'tgl_pelunasan' => $request->tanggal_jurnal,
 // 		'nominal' => $request->nominal_jurnal
 // 	]);
-	
+
 // 	if($data_pelunasan->pajak=='V1'){
 // 	   DB::select('CALL jurnal_debit(?,?,?,?)', [$request->post('akun_debit'),$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),'UMUM']);
 //            DB::select('CALL jurnal_kredit(?,?,?,?)', [130002,$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),'UMUM']);
@@ -117,7 +117,7 @@ use App\Jurnal_pengeluaran_kas;
 // 	   DB::select('CALL jurnal_debit(?,?,?,?)', [$request->post('akun_debit'),$request->post('nominal_jurnal'),$request->post('tanggal_jurnal') ,'UMUM']);
 //            DB::select('CALL jurnal_kredit(?,?,?,?)', [410001,$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),'UMUM']);
 // 	}
-	
+
 // 	DB::table('sales_order')->where('id_so',$request->akun_kredit)->update(['total_pelunasan'=>$data_pelunasan->total_penjualan - $request->nominal_jurnal]);
 //        	return redirect('home')->with('success', 'customer saved!');
 //     }
@@ -152,7 +152,7 @@ use App\Jurnal_pengeluaran_kas;
 //         $customer->no_telp = $request->get('no_telp');
 //         $customer->pic = $request->get('pic');
 //         $customer->tipe_customer = $request->get('tipe_customer');
-        
+
 //         $customer->save();
 
 //         return redirect('/customer')->with('success', 'customer Updated!');
@@ -167,23 +167,23 @@ use App\Jurnal_pengeluaran_kas;
 //         }
 //     }
 
-//     //public function getCoanumber(Request $request){     
-    
+//     //public function getCoanumber(Request $request){
+
 //       //      $cari = $request->post('searchTerm');
-                      
+
 //         //    $data = DB::table('coa')->select('NO_COA', 'DESKRIPSI_COA')->where('DESKRIPSI_COA', 'LIKE', '%'.$cari.'%')->get();
-           
+
 //           //  return response()->json($data);
-        
+
 //        // }
 
-// 	public function getCoanumber(){     
-    
-                      
+// 	public function getCoanumber(){
+
+
 //             $data = DB::table('coa')->select('NO_COA', 'DESKRIPSI_COA')->get();
-           
+
 //             return response()->json($data);
-        
+
 //         }
 
 
@@ -219,7 +219,7 @@ use App\Jurnal_pengeluaran_kas;
 //     if($this->cek_no_faktur($no_surat_jalan)){
 // 	    return redirect('/finance/faktur')->with(['message' => 'No Faktur '.$no_surat_jalan.' sudah di buat !!!']);
 // 	}
-    
+
 // 	$detail_faktur = DB::select("SELECT DISTINCT surat_jalan.no_surat_jalan
 //         , surat_jalan.tgl_surat_jalan
 //         , surat_jalan.no_surat_jalan
@@ -241,7 +241,7 @@ use App\Jurnal_pengeluaran_kas;
 //         ON surat_jalan.no_surat_jalan = detail_surat_jalan.no_surat_jalan
 //         INNER JOIN barang
 //         ON barang.kode_barang = detail_surat_jalan.kode_barang
-//         INNER JOIN sales_order 
+//         INNER JOIN sales_order
 //         ON sales_order.id_so = detail_surat_jalan.no_sales_order
 //         INNER JOIN detail_sales_order
 //         ON detail_surat_jalan.no_sales_order = detail_sales_order.id_sales_order
@@ -256,17 +256,17 @@ use App\Jurnal_pengeluaran_kas;
 // 	//dd($req->all());
 // 	$terbilang = $req->keterangan;
 // 	DB::table('faktur_penjualan')->insertGetId(['no_faktur' => $req->no_faktur, 'tgl_faktur' => $req->tgl_faktur, 'keterangan' => $req->keterangan]);
-	
+
 // 	if($req->pajak == "V0" || $req->pajak == "V1"){
 // 	     DB::select('CALL jurnal_debit(?,?,?,?)', ['120002',$req->total_penjualan,'Piutang Usaha','UMUM']);
 //              DB::select('CALL jurnal_kredit(?,?,?,?)', ['410001',$req->total_penjualan,'Total Penjualan','UMUM']);
-	     
+
 
 // 	}
 // 	DB::select('CALL jurnal_debit(?,?,?,?)', ['120002',$req->total_penjualan,'Piutang Usaha','UMUM']);
 //         DB::select('CALL jurnal_kredit(?,?,?,?)', ['410001',$req->total_penjualan,'Total Penjualan','UMUM']);
 // 	DB::select('CALL jurnal_kredit(?,?,?,?)', ['220001',$req->total_pajak,'Total Pajak','UMUM']);
-	
+
 // 	$tgl_faktur = $req->tgl_faktur;
 // 	$detail_faktur = DB::select("SELECT surat_jalan.no_surat_jalan
 //         , surat_jalan.tgl_surat_jalan
@@ -289,7 +289,7 @@ use App\Jurnal_pengeluaran_kas;
 //         ON surat_jalan.no_surat_jalan = detail_surat_jalan.no_surat_jalan
 //         INNER JOIN barang
 //         ON barang.kode_barang = detail_surat_jalan.kode_barang
-//         INNER JOIN sales_order 
+//         INNER JOIN sales_order
 //         ON sales_order.id_so = detail_surat_jalan.no_sales_order
 //         INNER JOIN detail_sales_order
 //         ON detail_surat_jalan.no_sales_order = detail_sales_order.id_sales_order
@@ -299,7 +299,7 @@ use App\Jurnal_pengeluaran_kas;
 //         $header_faktur = array_values($detail_faktur)[0];
 
 //         return view('finance.faktur.print_faktur', compact('detail_faktur','header_faktur','tgl_faktur','terbilang'));
-	
+
 //     }
 
 //     public function get_no_sj(Request $request){
@@ -315,9 +315,9 @@ use App\Jurnal_pengeluaran_kas;
 //     }
 
 //     public function print_faktur($no_faktur){
-// 	//$tgl_faktur = $req->tgl_faktur;	
+// 	//$tgl_faktur = $req->tgl_faktur;
 
-	
+
 // 	$detail_faktur = DB::select("SELECT DISTINCT surat_jalan.no_surat_jalan
 //         , surat_jalan.tgl_surat_jalan
 //         , surat_jalan.no_surat_jalan
@@ -343,7 +343,7 @@ use App\Jurnal_pengeluaran_kas;
 //         ON faktur_penjualan.no_faktur = detail_surat_jalan.no_surat_jalan
 //         INNER JOIN barang
 //         ON barang.kode_barang = detail_surat_jalan.kode_barang
-//         INNER JOIN sales_order 
+//         INNER JOIN sales_order
 //         ON sales_order.id_so = detail_surat_jalan.no_sales_order
 //         INNER JOIN detail_sales_order
 //         ON detail_surat_jalan.no_sales_order = detail_sales_order.id_sales_order
@@ -384,7 +384,7 @@ use App\Jurnal_pengeluaran_kas;
 //             return "Maaf Tidak Dapat di Prose Karena Jumlah nilai Terlalu Besar ";
 //         }
 //     }
-	
+
 //     public function getpo(){
 
 //         $getnopo = DB::table('pengadaan')->select('id_pengadaan')->get();
@@ -414,9 +414,9 @@ use App\Jurnal_pengeluaran_kas;
 
 //class baru
 
-class FinanceController extends Controller
+class FinanceControllermaster extends Controller
 {
-   
+
      public function index()
     {
         $KodePerkiraan = KodePerkiraan::all();
@@ -434,7 +434,7 @@ class FinanceController extends Controller
     {
        // return view('finance.jurnal.create');
        return view('finance.jurnal.create');
-       
+
     }
 
     public function input_pelunasan_piutang_supplier()
@@ -453,7 +453,7 @@ class FinanceController extends Controller
              'SUB' => $request->post('sub'),
              'JENIS' => $request->post('jenis')
          ]);
-     
+
          $kodeperkiraan->save();
         return redirect('finance.index')->with('success', 'customer saved!');}
         catch (Throwable $e) {
@@ -480,7 +480,7 @@ class FinanceController extends Controller
 	]);
 		return redirect('home')->with('success', 'customer saved!');
 
-	}	
+	}
 
 
     public function storeData_Jurnal(Request $request)
@@ -490,7 +490,7 @@ class FinanceController extends Controller
 	    $data_pengadaan = DB::table('pengadaan')->select('total_pembelian','pajak','total_pajak')->where('id_pengadaan','=',$request->no_po)->first();
 	    //dd($data_pengadaan->total_pembelian-10000);
 	    //dd($data_pengadaan->pajak);
-	
+
         DB::table('pelunasan_hutang_supplier')->insert([
 		'id_pengadaan' => $request->akun_kredit,
 		'tgl_pelunasan' => $request->tanggal_jurnal,
@@ -506,8 +506,8 @@ class FinanceController extends Controller
 	else{
 	    DB::select('CALL jurnal_debit(?,?,?,?)', [$request->post('akun_debit'),$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),$request->post('deskripsi_jurnal'),'UMUM']);
             DB::select('CALL jurnal_kredit(?,?,?,?)', [130002,$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),$request->post('deskripsi_jurnal'),'UMUM']);
-	}   
-	DB::table('pengadaan')->where('id_pengadaan',$request->akun_kredit)->update(['total_pelunasan_piutang'=>$data_pengadaan->total_pembelian - $request->nominal_jurnal]);  
+	}
+	DB::table('pengadaan')->where('id_pengadaan',$request->akun_kredit)->update(['total_pelunasan_piutang'=>$data_pengadaan->total_pembelian - $request->nominal_jurnal]);
 	return redirect('home')->with('success', 'customer saved!');
     }
 
@@ -524,7 +524,7 @@ class FinanceController extends Controller
 		'tgl_pelunasan' => $request->tanggal_jurnal,
 		'nominal' => $request->nominal_jurnal
 	]);
-	
+
 	if($data_pelunasan->pajak=='V1'){
 	   DB::select('CALL jurnal_debit(?,?,?,?)', [$request->post('akun_debit'),$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),'UMUM']);
            DB::select('CALL jurnal_kredit(?,?,?,?)', [130002,$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),'UMUM']);
@@ -534,7 +534,7 @@ class FinanceController extends Controller
 	   DB::select('CALL jurnal_debit(?,?,?,?)', [$request->post('akun_debit'),$request->post('nominal_jurnal'),$request->post('tanggal_jurnal') ,'UMUM']);
            DB::select('CALL jurnal_kredit(?,?,?,?)', [410001,$request->post('nominal_jurnal'),$request->post('tanggal_jurnal'),'UMUM']);
 	}
-	
+
 	DB::table('sales_order')->where('id_so',$request->akun_kredit)->update(['total_pelunasan'=>$data_pelunasan->total_penjualan - $request->nominal_jurnal]);
        	return redirect('home')->with('success', 'customer saved!');
     }
@@ -571,7 +571,7 @@ class FinanceController extends Controller
         $customer->no_telp = $request->get('no_telp');
         $customer->pic = $request->get('pic');
         $customer->tipe_customer = $request->get('tipe_customer');
-        
+
         $customer->save();
 
         return redirect('/customer')->with('success', 'customer Updated!');
@@ -703,7 +703,7 @@ if ($request->has('q')) {
         ON surat_jalan.no_surat_jalan = detail_surat_jalan.no_surat_jalan
         INNER JOIN barang
         ON barang.kode_barang = detail_surat_jalan.kode_barang
-        INNER JOIN sales_order 
+        INNER JOIN sales_order
         ON sales_order.id_so = detail_surat_jalan.no_sales_order
         INNER JOIN detail_sales_order
         ON detail_surat_jalan.no_sales_order = detail_sales_order.id_sales_order
@@ -721,17 +721,17 @@ if ($request->has('q')) {
 //    die();
 	$terbilang = $req->keterangan;
 	DB::table('faktur_penjualan')->insertGetId(['no_faktur' => $req->no_faktur, 'tgl_faktur' => $req->tgl_faktur, 'keterangan' => $req->keterangan]);
-	
+
 	if($req->pajak == "V0" || $req->pajak == "V1"){
 	     DB::select('CALL jurnal_debit(?,?,?,?)', ['120002',$req->total_penjualan,'Piutang Usaha','UMUM']);
              DB::select('CALL jurnal_kredit(?,?,?,?)', ['410001',$req->total_penjualan,'Total Penjualan','UMUM']);
-	     
+
 
 	}
 	DB::select('CALL jurnal_debit(?,?,?,?)', ['120002',str_replace(".","",$req->total_penjualan),'Piutang Usaha','UMUM']);
         DB::select('CALL jurnal_kredit(?,?,?,?)', ['410001',str_replace(".","",$req->total_penjualan),'Total Penjualan','UMUM']);
 	//DB::select('CALL jurnal_kredit(?,?,?,?)', ['220001',$req->total_pajak,'Total Pajak','UMUM']);
-	
+
 	$tgl_faktur = $req->tgl_faktur;
 	$detail_faktur = DB::select("SELECT surat_jalan.no_surat_jalan
         , surat_jalan.tgl_surat_jalan
@@ -754,7 +754,7 @@ if ($request->has('q')) {
         ON surat_jalan.no_surat_jalan = detail_surat_jalan.no_surat_jalan
         INNER JOIN barang
         ON barang.kode_barang = detail_surat_jalan.kode_barang
-        INNER JOIN sales_order 
+        INNER JOIN sales_order
         ON sales_order.id_so = detail_surat_jalan.no_sales_order
         INNER JOIN detail_sales_order
         ON detail_surat_jalan.no_sales_order = detail_sales_order.id_sales_order
@@ -764,7 +764,7 @@ if ($request->has('q')) {
         $header_faktur = array_values($detail_faktur)[0];
 
         return view('finance.faktur.print_faktur', compact('detail_faktur','header_faktur','tgl_faktur','terbilang'));
-	
+
     }
 
     public function get_no_sj(Request $request){
@@ -782,9 +782,9 @@ if ($request->has('q')) {
     }
 
     public function print_faktur($no_faktur){
-	//$tgl_faktur = $req->tgl_faktur;	
+	//$tgl_faktur = $req->tgl_faktur;
 
-	
+
 	$detail_faktur = DB::select("SELECT surat_jalan.no_surat_jalan
         , surat_jalan.tgl_surat_jalan
         , surat_jalan.no_surat_jalan
@@ -810,7 +810,7 @@ if ($request->has('q')) {
 	ON faktur_penjualan.no_faktur = detail_surat_jalan.no_surat_jalan
         INNER JOIN barang
         ON barang.kode_barang = detail_surat_jalan.kode_barang
-        INNER JOIN sales_order 
+        INNER JOIN sales_order
         ON sales_order.id_so = detail_surat_jalan.no_sales_order
         INNER JOIN detail_sales_order
         ON detail_surat_jalan.no_detail_sales_order = detail_sales_order.counter_detail_sales_order
@@ -851,7 +851,7 @@ if ($request->has('q')) {
             return "Maaf Tidak Dapat di Prose Karena Jumlah nilai Terlalu Besar ";
         }
     }
-	
+
     public function getpo(){
 
         $getnopo = DB::table('pengadaan')->select('id_pengadaan')->get();
@@ -954,7 +954,7 @@ if ($request->has('q')) {
         ON surat_jalan.no_surat_jalan = detail_surat_jalan.no_surat_jalan
         INNER JOIN barang
         ON barang.kode_barang = detail_surat_jalan.kode_barang
-        INNER JOIN sales_order 
+        INNER JOIN sales_order
         ON sales_order.id_so = detail_surat_jalan.no_sales_order
         INNER JOIN detail_sales_order
         ON detail_surat_jalan.no_sales_order = detail_sales_order.id_sales_order
@@ -1017,7 +1017,7 @@ ON supplier.kode_supplier = pengadaan.kode_supplier");
                     $output .= '
         <tr>
          <td>' . $row->id_pengadaan . '</td>
-         <td>' . $row->nama_supplier . '</td> 
+         <td>' . $row->nama_supplier . '</td>
          <td>' . $row->tgl_pembelian . '</td>
          <td>' . $row->status . '</td>
          <td>' . $row->pajak . '</td>

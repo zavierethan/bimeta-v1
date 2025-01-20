@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Materialrequest extends Model
+class MaterialRequest extends Model
 {
     protected $table='material_request';
     protected $fillable = ['id_material_request','tgl_material_request','peminta','no_spk'];
