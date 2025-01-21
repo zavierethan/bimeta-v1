@@ -1,29 +1,32 @@
-# Use an official PHP image with Apache
+# Dockerfile for App1
 FROM php:7.4-apache
 
-# Install necessary PHP extensions
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql opcache
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libzip-dev unzip curl git \
+    && docker-php-ext-install pdo pdo_mysql zip
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /var/www/html
 
-# Copy the Laravel project into the container
+# Copy application code
 COPY . /var/www/html
 
-# Set the necessary permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Install Laravel dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Install Composer (if needed, adjust if you use a different version of Composer)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Set permissions for Laravel directories
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose the Apache port (80)
-EXPOSE 80
+# Expose port
+EXPOSE 8081
 
-# Start Apache in the foreground
+# Start Apache
 CMD ["apache2-foreground"]

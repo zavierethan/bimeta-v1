@@ -2,36 +2,17 @@ version: '3.8'
 
 services:
   app:
-    build: .
-    container_name: laravel-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bimeta-v1-app
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
-      - .:/var/www/html
+      - ./code:/var/www/html
     networks:
-      - laravel-network
-    depends_on:
-      - db
-
-  db:
-    image: mysql:5.7
-    container_name: mysql-db
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel_user
-      MYSQL_PASSWORD: laravel_password
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - laravel-network
-    ports:
-      - "3307:3306"
+      - bimeta-net
 
 networks:
-  laravel-network:
+  bimeta-net:
     driver: bridge
-
-volumes:
-  mysql_data:
-    driver: local
