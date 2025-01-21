@@ -1,50 +1,29 @@
-# Use official PHP Apache image
-FROM php:7.2-apache
+# Use an official PHP image with Apache
+FROM php:7.4-apache
 
-# Install system dependencies and Composer
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    git \
-    unzip && \
-    docker-php-ext-configure zip && \
-    docker-php-ext-install gd pdo pdo_mysql zip
+# Install necessary PHP extensions
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip git \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql opcache
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Enable mod_rewrite for Apache
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Copy the Laravel project to the Apache web directory
-COPY . /var/www/html
-
-# Set working directory to Laravel project
+# Set the working directory inside the container
 WORKDIR /var/www/html
 
-RUN composer clear-cache
-RUN rm -rf vendor composer.lock
+# Copy the Laravel project into the container
+COPY . /var/www/html
 
-# Run Composer install to install PHP dependencies
-RUN composer install --no-interaction --prefer-dist
-# Set file permissions
-RUN git config --global --add safe.directory /var/www/html
+# Set the necessary permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html
-
-# Set proper permissions for storage and bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Configure Apache to use /public as the DocumentRoot
-RUN echo '<VirtualHost *:80>\n\
-    DocumentRoot /var/www/html/public\n\
-    <Directory /var/www/html/public>\n\
-        Options Indexes FollowSymLinks\n\
-        AllowOverride All\n\
-        Require all granted\n\
-    </Directory>\n\
-</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+# Install Composer (if needed, adjust if you use a different version of Composer)
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Expose port 80
+# Expose the Apache port (80)
 EXPOSE 80
+
+# Start Apache in the foreground
+CMD ["apache2-foreground"]
