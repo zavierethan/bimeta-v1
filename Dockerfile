@@ -30,8 +30,8 @@ COPY composer.* ./
 RUN composer install --no-scripts --no-autoloader
 
 # Copy npm files and install dependencies
-COPY package*.json ./
-RUN npm install
+# COPY package*.json ./
+# RUN npm install
 
 # Copy Laravel project files
 COPY . .
