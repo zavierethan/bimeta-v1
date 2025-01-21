@@ -1,29 +1,48 @@
-# Dockerfile for App1
+#LABEL authors="robya"
 FROM php:7.4-apache
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
-    libzip-dev unzip curl git \
-    && docker-php-ext-install pdo pdo_mysql zip
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    unzip \
+    npm \
+    curl \
+    vim \
+    && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Set the working directory
+# # Copy custom Apache configuration file
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql zip
+
+# Set working directory
 WORKDIR /var/www/html
 
-# Copy application code
-COPY . /var/www/html
+# Copy composer files and install dependencies
+COPY composer.* ./
+RUN composer install --no-scripts --no-autoloader
 
-# Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Copy npm files and install dependencies
+COPY package*.json ./
+RUN npm install
 
-# Set permissions for Laravel directories
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Copy Laravel project files
+COPY . .
+
+# Generate Laravel mix assets
+# RUN npm run build
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+RUN service apache2 restart
 
 # Expose port
 EXPOSE 8081
